@@ -1,43 +1,47 @@
-// @title           food-api
-// @version         1.0
-// @description     Example food api to learn golang
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host      localhost:8080
-// @BasePath  /
 package server
 
 import (
-    "github.com/labstack/echo/v4"
-    "github.com/labstack/echo/v4/middleware"
-    "github.com/mtk3d/food-api/cmd/flags"
-    "github.com/mtk3d/food-api/internal/car/infrastructure/controllers"
-    "github.com/urfave/cli/v2"
-    "log"
+	"github.com/archi-tektur/car-rental-api/cmd/flags"
+	"github.com/archi-tektur/car-rental-api/internal/car/infrastructure/actions"
+	"github.com/archi-tektur/car-rental-api/internal/car/infrastructure/storage"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/urfave/cli/v2"
+	"log"
 )
 
-func Command(c *cli.Context) error {
-    app := echo.New()
+// application
+var app = echo.New()
 
-    app.Use(middleware.Logger())
-    app.Use(middleware.Recover())
+// global dependencies
+var carHandler *actions.CarHandler
 
-    app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-        AllowOrigins: []string{c.String(flags.CorsAllowOrigin)},
-        AllowHeaders: []string{"*"},
-    }))
+func Startup(context *cli.Context) error {
+	configure(context)
+	configureDependencies()
+	registerRoutes()
 
-    app.GET("/api", func(context *echo.Context) error {
-        return c.SendString("Hello, World!")
-    })
+	log.Fatal(app.Start(":3000"))
 
-    app.GET("/car", controllers.NewListCarsHandler().ListCars)
+	return nil
+}
 
-    //app.Get("/food", controllers.NewListCarsHandler().ListCars)
-    //e.POST("/food", postfood.NewPostFood(repository).PostFood)
-    //e.POST("/food/:id/bite", postbite.NewPostBite(repository).PostBite)
+func configure(context *cli.Context) {
+	app.Use(middleware.Logger())
+	app.Use(middleware.Recover())
 
-    log.Fatal(app.Listen(":3000"))
+	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{context.String(flags.CorsAllowOrigin)},
+		AllowHeaders: []string{"*"},
+	}))
+}
 
-    return nil
+func configureDependencies() {
+	repository := storage.NewFlatRepository()
+	carHandler = actions.NewCarHandler(*repository)
+}
+
+func registerRoutes() {
+	app.GET("/car", carHandler.ListCars)
+	app.GET("/car/:id", carHandler.ShowCar)
 }

@@ -13,7 +13,7 @@ const docTemplate = `{
         "contact": {},
         "license": {
             "name": "Apache 2.0",
-            "url": "controllers://www.apache.org/licenses/LICENSE-2.0.html"
+            "url": "actions://www.apache.org/licenses/LICENSE-2.0.html"
         },
         "version": "{{.Version}}"
     },
