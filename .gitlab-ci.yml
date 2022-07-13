@@ -1,0 +1,8 @@
+stages:
+  - test
+  - build
+  - deploy
+
+include:
+  - local: build/ci/test.gitlab-ci.yml
+  - local: build/ci/build.gitlab-ci.yml
