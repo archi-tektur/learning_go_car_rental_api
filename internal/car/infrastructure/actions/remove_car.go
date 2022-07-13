@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (this *CarHandler) ShowCar(context echo.Context) error {
+func (this *CarHandler) RemoveCar(context echo.Context) error {
 
 	id, err := strconv.Atoi(context.Param("id"))
 
@@ -23,5 +23,7 @@ func (this *CarHandler) ShowCar(context echo.Context) error {
 		return context.JSON(message.Code, message)
 	}
 
-	return context.JSON(http.StatusOK, car)
+	this.repository.RemoveCar(id)
+
+	return context.JSON(http.StatusNoContent, nil)
 }

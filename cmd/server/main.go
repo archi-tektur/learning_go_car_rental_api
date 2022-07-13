@@ -45,4 +45,5 @@ func registerRoutes() {
 	app.GET("/car", carHandler.ListCars)
 	app.GET("/car/:id", carHandler.ShowCar)
 	app.POST("/car", carHandler.CreateCar)
+	app.DELETE("/car/:id", carHandler.RemoveCar)
 }

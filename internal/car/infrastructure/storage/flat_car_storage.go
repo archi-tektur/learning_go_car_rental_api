@@ -2,7 +2,7 @@ package storage
 
 import (
 	"errors"
-	domain "github.com/archi-tektur/car-rental-api/internal/car/domain"
+	"github.com/archi-tektur/car-rental-api/internal/car/domain"
 )
 
 type CreateCarData struct {
@@ -33,23 +33,21 @@ func (r *FlatCarRepository) Save(request *CreateCarData) int {
 	return carId
 }
 
-func (r *FlatCarRepository) RemoveFood(id int) {
-	found, _ := r.GetCarById(id)
+func (r *FlatCarRepository) RemoveCar(id int) {
+	foundCarPointer, _ := r.FindCarById(id)
 
-	if found == nil {
-		return
-	}
+	var foundCar = *foundCarPointer
 
 	var sliceWithoutRemovedElement []domain.Car
 	for _, car := range r.cars {
-		if car.Id != found.Id {
+		if car.Id != foundCar.Id {
 			sliceWithoutRemovedElement = append(sliceWithoutRemovedElement, car)
 		}
 	}
 	r.cars = sliceWithoutRemovedElement
 }
 
-func (r *FlatCarRepository) GetAllCars() []domain.Car {
+func (r *FlatCarRepository) FindAllCars() []domain.Car {
 	return r.cars
 }
 
@@ -68,13 +66,16 @@ func (r *FlatCarRepository) findLastIndex() int {
 	return min
 }
 
-func (r *FlatCarRepository) GetCarById(id int) (*domain.Car, error) {
+func (r *FlatCarRepository) FindCarById(id int) (*domain.Car, error) {
 	var found *domain.Car
 
 	for _, car := range r.cars {
-		if car.Id == id {
-			found = &car
+		if car.Id != id {
+			continue
 		}
+
+		found = &car
+		break
 	}
 
 	if found == nil {

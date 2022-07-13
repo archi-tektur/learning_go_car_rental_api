@@ -7,7 +7,7 @@ import (
 )
 
 func (this *CarHandler) ListCars(context echo.Context) error {
-	cars := this.repository.GetAllCars()
+	cars := this.repository.FindAllCars()
 
 	if len(cars) == 0 {
 		cars = make([]domain.Car, 0)

@@ -17,7 +17,7 @@ func (this *CarHandler) CreateCar(context echo.Context) error {
 
 	id := this.repository.Save(createCarData)
 
-	car, _ := this.repository.GetCarById(id)
+	car, _ := this.repository.FindCarById(id)
 
 	return context.JSON(http.StatusOK, car)
 }
