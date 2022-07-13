@@ -21,3 +21,11 @@ func CarNotFound() JsonErrorMessage {
 		Message: "Car with given ID not found.",
 	}
 }
+
+func CarCreationFailedDueUserInput() JsonErrorMessage {
+	return JsonErrorMessage{
+		Error:   true,
+		Code:    400,
+		Message: "Request data are incorrect.",
+	}
+}
