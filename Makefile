@@ -15,7 +15,7 @@ container: build/package/Dockerfile
 	docker build -t $(IMAGE_NAME) -f build/package/Dockerfile .
 
 vendor: go.mod go.sum
-	GOPRIVATE="github.com/mtk3d/food-api" go mod vendor
+	GOPRIVATE="github.com/archi-tektur/car-rental-api" go mod vendor
 
 .DEFAULT_GOAL=build
 .PHONY=build swagger test clear container

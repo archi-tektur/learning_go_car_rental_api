@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/mtk3d/food-api/cmd/flags"
-	"github.com/mtk3d/food-api/cmd/server"
+	"github.com/archi-tektur/car-rental-api/cmd/flags"
+	"github.com/archi-tektur/car-rental-api/cmd/server"
 	"github.com/urfave/cli/v2"
 )
 
@@ -22,7 +22,7 @@ func main() {
 				Name:        "server",
 				Aliases:     []string{"s"},
 				Description: "Run application to handle endpoints",
-				Action:      server.Command,
+				Action:      server.Startup,
 			},
 		},
 	}
